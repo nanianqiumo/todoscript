@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="javascripts/Mdate/iScroll.js"></script>
+    <script src="javascripts/Mdate/Mdate.js"></script>
+    <script src="javascripts/ajax.js"></script>
+    <script>
+    </script>
+    <title>Todo</title>
+    <style>
+        ._mar{
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<form id="todoItems" action="/test" method="post">
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>ToDo List <small id="dateShowBtn">s</small></h1>
+        </div>
+        <div id="tip" class="alert alert-success" style="display: none;" role="alert">...</div>
+        <div id='contented'></div>
+        <textarea name="note" class="form-control" id="note" rows="3"></textarea>
+    </div>
+    <button type="button" id="sub" style="width:95%;margin:20px auto;" class="btn btn-primary btn-lg btn-block">Submit</button>
+</form>
+   <script type="text/javascript">
+(function(){
+
+    let todoItem = `<div class="input-group input-group-lg _mar">
+            <span class="input-group-addon" id="sizing-addon1">{#}</span>
+            <input type="text" name="todo" class="form-control _item" placeholder="Todo list ..." aria-describedby="sizing-addon1">
+        </div>`;
+    let i;
+    let _node = document.createElement('div');
+    let content = document.getElementById('contented');  
+    function lis(){
+        _classNode = document.getElementsByClassName('_item');
+            _classNode[_classNode.length -1].addEventListener('focus',function(e){
+                // if(_classNode[_classNode.length -1].value != ''){
+                if(_classNode[_classNode.length -1]  == this){
+                    _node.innerHTML = todoItem.replace('{#}',i++);
+                    content.appendChild(_node.firstChild); 
+                    lis();
+                }
+            })
+    }
+    function _init(){
+        i = 1;
+        content.innerHTML = todoItem.replace('{#}',i++);
+        document.getElementById('note').value = "";
+        lis();
+    }
+    function getTime(){
+        let ElTime = document.getElementById('dateShowBtn');
+        let _time = new Date();
+        ElTime.innerText = `${_time.getFullYear()}-${_time.getMonth() +1 }-${_time.getDate()}`;
+        a({
+            url:'/api/gettime',
+            method:'get',
+            success:function(v){
+                ElTime.innerText = v.day
+            }
+        })
+    }
+    getTime();
+    _init();
+    document.getElementById('sub').addEventListener('click',function(e){
+        let tip = document.getElementById('tip');
+        let ElTime = document.getElementById('dateShowBtn');
+        let data = formser('todoItems');
+        data.day = document.getElementById('dateShowBtn').innerText;
+        a({
+            url:'/api/addtodo',
+            method:'post',
+            data:data,
+            success:function(v){
+                tip.innerText = v.msg;
+                tip.style.display = 'block';
+                ElTime.innerText = v.day
+                _init();
+
+            }
+        })
+    })
+
+    let date=new Date;
+    function getCurrentMonthLast(){
+        let date=new Date();
+        let currentMonth=date.getMonth();
+        let nextMonth=++currentMonth;
+        let nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
+        let oneDay=1000*60*60*24;
+        return new Date(nextMonthFirstDay-oneDay);
+    }
+    new Mdate("dateShowBtn", {
+        acceptId: "dateShowBtn",
+        beginYear: date.getFullYear(),
+        beginMonth: date.getMonth() +1,
+        beginDay: date.getDate(),
+        endYear: date.getFullYear(),
+        endMonth: 12,
+        endDay: getCurrentMonthLast(),
+        format: "-"
+    })
+})()
+   </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+    "log": {
+        "level": "info"
+    },
+    "server": {
+        "port": 3000
+    },
+    "auth": {
+        "secret": "YanDong",
+        "tokenname": "token",
+        "pass": ["/auth"],
+        "role":{
+            "admin":[".*"],
+            "financialAdmin":["/financial/*"],
+            "financialManager":["/login","/index","/api/login","/api/addtodo","/api/gettime"],
+            "financialStaff":["GET:/financial/test1","POST:/financial/test2"]
+        },
+        "cors": true,
+        "errMsg": "未认证",
+        "errStatus": 401
+    }
+}
