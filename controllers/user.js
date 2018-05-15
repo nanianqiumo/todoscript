@@ -13,33 +13,7 @@ const config = require('../config/default.json')
  */
 exports.signup = async (ctx, next) => {
     // let username = xss(ctx.request.body.username.trim())
-    let data1 = {
-        username:'ZhuNa',
-        password:'ZhuNa',
-        fromemail:"1589074638@qq.com",
-        fromkey:'funfapxattuthgii',
-        toemail:'nanianqiumo@foxmail.com',
-        role:'admin',
-        uuid:uuid.v4()
-    }
-     let data2 = {
-        username:'YanDong',
-        password:'YanDong',
-        fromemail:"827877191@qq.com",
-        fromkey:'kaxzasrnxghjbdcj',
-        toemail:'tsengel@orhonit.com',
-        role:'admin',
-        uuid:uuid.v4()
-    }
-    let data3 = {
-        username:'FangXu',
-        password:'FangXu',
-        fromemail:"46259283@qq.com",
-        fromkey:'tcfenuqzanzjcaah',
-        toemail:'596036371@qq.com,1326963686@qq.com,xr843258607@aliyun.com,670100383@qq.com',
-        role:'admin',
-        uuid:uuid.v4()
-    }
+
 
 	if( !await users.count({username:data3.username})){
         await users.insert(data3)
