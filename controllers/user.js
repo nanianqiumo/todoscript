@@ -13,10 +13,17 @@ const config = require('../config/default.json')
  */
 exports.signup = async (ctx, next) => {
     // let username = xss(ctx.request.body.username.trim())
-
-
-	if( !await users.count({username:data3.username})){
-        await users.insert(data3)
+    let data1 = {
+        username:'ZhuNa',
+        password:'ZhuNa',
+        fromemail:"",
+        fromkey:'',
+        toemail:'',
+        role:'admin',
+        uuid:uuid.v4()
+    }
+	if( !await users.count({username:data.username})){
+        await users.insert(data)
         ctx.body = {
             success:true
         }
