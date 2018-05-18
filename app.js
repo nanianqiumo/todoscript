@@ -32,7 +32,8 @@ app.use(require('koa-static')(__dirname + '/public'))
 app.use(xauth(config.auth, (v) => v, (ctx) => {  
     if (ctx.body.name == 'TokenExpiredError') {
         ctx.body.code = -1
-        ctx.body.msg = '自定义错误信息，TOKEN已过期'
+        ctx.body.err = true
+        ctx.body.res = 'TOKEN已过期'
     }
 }))
 // error handler

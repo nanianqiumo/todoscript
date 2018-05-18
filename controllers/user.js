@@ -12,29 +12,42 @@ const config = require('../config/default.json')
  * @yield {[type]}   [description]
  */
 exports.signup = async (ctx, next) => {
-    // let username = xss(ctx.request.body.username.trim())
-    let data1 = {
-        username:'ZhuNa',
-        password:'ZhuNa',
-        fromemail:"",
-        fromkey:'',
-        toemail:'',
-        role:'admin',
+    let params = ctx.request.body;
+    let signupState = true;
+    let role = xss(params.role.trim()) ? config.auth.cors[xss(params.role.trim())] : null;
+    if(!role){
+       return ctx.body = {
+            err:true,
+            res:'邀请码不对拒绝注册!'
+        }
+    }
+    let data = {
+        username:xss(params.username.trim()),
+        password:xss(params.password.trim()),
+        fromemail:xss(params.fromemail.trim()),
+        fromkey:xss(params.fromkey.trim()),
+        toemail:xss(params.toemail.trim()),
+        role:xss(params.role.trim()),
         uuid:uuid.v4()
     }
-	if( !await users.count({username:data.username})){
+    for(let r in data){
+        if(r.lengtn < 4){
+            signupState = false;
+        }
+    }
+	if(signupState && !await users.count({username:data.username}) && data.password.length > 4){
         await users.insert(data)
         ctx.body = {
-            success:true
+            err:false,
+            res:"注册成功"
         }
     }else{
         ctx.body = {
-            success:false
+            err:true,
+            res:'注册失败!'
         }
     }
     return next
-    
-
 }
 
 exports.login = async function (ctx, next) {
@@ -45,7 +58,8 @@ exports.login = async function (ctx, next) {
       console.log(model.password,xss(params.password.trim()))
       if(model && model.password === xss(params.password.trim())){
         loginState = true;
-        model.role = 'admin';
+        // model.role = 'admin';
+        model.ip = ctx.request.ip;
       }
         if (loginState) { // 判断用户名密码等认证方式，这里默认通过
             // const user = { userId: '123', role: 'admin' }
@@ -61,6 +75,7 @@ exports.login = async function (ctx, next) {
         }
     } catch (error) {
         console.error(error)
-        ctx.body = error
+        ctx.status = 401
+        ctx.body = '用户名或密码错误'
     }
   }

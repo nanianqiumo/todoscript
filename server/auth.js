@@ -15,7 +15,9 @@ module.exports = function (authConfig = {}, tokenRule, errorProcess) {
         if (authConfig.pass && authConfig.pass instanceof Array && authConfig.pass.length > 0) {
             for (let p of authConfig.pass) {
                 const rep = new RegExp(p)
-                if (rep.test(ctx.url)) {
+                // 临时修改
+                // if (rep.test(ctx.url)) {
+                if (p === ctx.url) {
                     return next()
                 }
             }
@@ -44,6 +46,14 @@ module.exports = function (authConfig = {}, tokenRule, errorProcess) {
                     ctx.tokenVerify = tokenVerify
                     return next()
                 }
+
+                // 如果使用非登陆时的IP,不允许进入
+                if(ctx.request.ip != tokenVerify.ip){
+                    ctx.status = authConfig.errStatus
+                    ctx.body = { err: true, res: `未使用登陆时IP,请切换网络或者请重新登陆` }
+                    return;
+                }
+
                 // 已配置角色控制，则进一步进行角色身份检查，遍历角色所拥有的路由规则
                 let roleRegArr = tokenVerify.role ? authConfig.cors[tokenVerify.role] : null
                 if (roleRegArr && roleRegArr instanceof Array && roleRegArr.length > 0) {

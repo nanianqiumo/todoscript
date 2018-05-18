@@ -28,8 +28,12 @@ function a(opt) {
     xmlHttp.send(JSON.stringify(opt.data));   
     xmlHttp.onreadystatechange = function () {  
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {  
-            opt.success(JSON.parse(xmlHttp.responseText));  
-        }  
+            opt.success(JSON.parse(xmlHttp.responseText));
+        }else if(xmlHttp.readyState == 4 && xmlHttp.status == 401){
+            console.log(xmlHttp.responseText)
+            alert(JSON.parse(xmlHttp.responseText).res);
+            location.href = '/login';
+        }
     };  
 }
 

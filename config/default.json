@@ -8,13 +8,13 @@
     "auth": {
         "secret": "YanDong",
         "tokenname": "token",
-        "pass": ["/login","/index","/api/signup"],
+        "pass": ["/","/login","/register","/index","/api/login","/api/register"],
         "role":true,
         "cors": {
             "admin":[".*"],
-            "financialAdmin":["/financial/*"],
-            "financialManager":["/login","/index","/api/login","/api/addtodo","/api/gettime"],
-            "financialStaff":["GET:/financial/test1","POST:/financial/test2"]
+            "todoAdmin":["/api/*"],
+            "todoManager":["/login","/index","/api/login","/api/addtodo","/api/gettime"],
+            "todoTest":["GET:/api/gettime","POST:/api/login"]
         },
         "errMsg": "未认证",
         "errStatus": 401

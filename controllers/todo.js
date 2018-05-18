@@ -53,8 +53,6 @@ exports.addtodo = async (ctx , next) => {
         sort: {"day": -1},
         limit: 1,
     })
-    console.log(todos.todo)
-    console.log(typeof todos.todo)
     let day = GetDateStr(new Date(usertime).getTime(),0);
     if(dbData && dbData.day > day ){
         ctx.body = {
@@ -62,25 +60,14 @@ exports.addtodo = async (ctx , next) => {
             err:true
         };
         return;
-
-        // 
-        // day = GetDateStr(new Date(usertime).getTime(),0)
     }else if(dbData && dbData.day  == day ){
         ctx.body = {
             msg:`${usertime} Todo已记录!`,
             err:true
         };
         return;
-    }else if( dbData && dbData.day  < day  ){
-        day = GetDateStr(dbData.day)
     }
-
-    // ctx.body = {
-    //     msg:`${usertime} Todo记录成功`,
-    //     err:false
-    // };
-    // return;
-
+ 
     let data = {
         uuid:u.uuid,
         day:day,
@@ -101,10 +88,10 @@ exports.addtodo = async (ctx , next) => {
     };
     return
 
-    ctx.body = {
-        msg:'保存失败,请刷新页面重试!',
-        ree:false
-    };
+    // ctx.body = {
+    //     msg:'保存失败,请刷新页面重试!',
+    //     ree:false
+    // };
 
 }
 

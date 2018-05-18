@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+    if(!localStorage.token) location.href = '/login';
+    </script>
     <script src="javascripts/Mdate/iScroll.js"></script>
     <script src="javascripts/Mdate/Mdate.js"></script>
     <script src="javascripts/ajax.js"></script>
@@ -27,8 +30,13 @@
         <div id="tip" class="alert alert-success" style="display: none;" role="alert">...</div>
         <div id='contented'></div>
         <textarea name="note" class="form-control" id="note" rows="3"></textarea>
+        <br>
+        <div class="form-group">
+                <div class="col-12">
+                    <button type="button" id="sub"  class="btn btn-primary btn-lg btn-block">Submit</button>
+                </div>
+              </div>
     </div>
-    <button type="button" id="sub" style="width:95%;margin:20px auto;" class="btn btn-primary btn-lg btn-block">Submit</button>
 </form>
    <script type="text/javascript">
 (function(){

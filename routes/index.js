@@ -18,6 +18,10 @@ router.get('/login',async ctx => {
   await ctx.render('login')
 })
 
+router.get('/register',async ctx => {
+  await ctx.render('register')
+})
+
 
 router.get('/auth', async (ctx, next) => {
   // ctx.body = 'koa2 string'

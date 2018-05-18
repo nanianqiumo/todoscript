@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="javascripts/ajax.js"></script>
+    <title>Register</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Register <small id="dateShowBtn"></small></h1>
+        </div>
+        <div id="tip" class="alert alert-danger" role="alert" style="display:none;"></div>
+        <form  id="register">
+            <div class="form-group">
+              <label for="name">You name</label>
+              <input type="text" class="form-control" name="username" id="name" placeholder="YanDong">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="fromemail" placeholder="Email">
+              </div>
+            <div class="form-group">
+              <label for="key">Email Key</label>
+              <input type="text" class="form-control" id="key" name="fromkey" placeholder="Key">
+            </div>
+            <div class="form-group">
+              <label for="sendtoemail">Send to email address</label>
+              <input type="text" class="form-control" id="sendtoemail" name="toemail" placeholder="Email,Email">
+            </div>
+            <div class="form-group">
+                <label for="code">Invitation code</label>
+                <input type="text" class="form-control" id="code" name="role" placeholder="Code">
+            </div>
+            <div class="form-group">
+                <div class="col-12">
+                  <button type="button" id="sub"  class="btn btn-primary btn-lg btn-block">Register</button>
+                </div>
+              </div>
+          </form>
+    </div>
+<script>
+document.getElementById('sub').addEventListener('click',function(){
+  let tip = document.getElementById('tip');
+  tip.style.display="none";
+  let data = formser('register');
+  let xhr = new XMLHttpRequest();
+  xhr.open('post','/api/register');
+  xhr.setRequestHeader("Content-type","application/json");
+  xhr.send(JSON.stringify(data));
+  xhr.onreadystatechange = function () {
+  if (xhr.readyState == 4 && xhr.status == 200 && !JSON.parse(xhr.responseText).err) {
+    console.log(xhr.responseText);
+  location.href = "/login";
+  } else if(xhr.readyState == 4){
+  tip.style.display="block";
+  tip.innerText = JSON.parse(xhr.responseText).res;
+  }
+  };
+})
+</script>
+</body>
+</html>

@@ -28,7 +28,7 @@ router.get('/test', async function (ctx, next) {
 router.post('/addtodo', _Todo.addtodo) // 添加TODO
 router.get('/gettime', _Todo.gettime) // 返回Todo 时间
 
-router.get('/signup', _User.signup)
+router.post('/register', _User.signup)
 
 router.get('/test', _Test.test)
 
